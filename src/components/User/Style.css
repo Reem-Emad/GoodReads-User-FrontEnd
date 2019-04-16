@@ -1,0 +1,44 @@
+.BookCard
+{
+    display: flex;
+    flex-direction: row !important;
+    width:600px !important;
+    margin:10px 10px 10px 20px;
+
+    padding:10px 10px 10px 40px;
+    color:  #58371F !important;
+}
+.BookCard_img
+{
+    width:32% !important;
+    height:100% !important;
+}
+.BookCars_dropdown--btn
+{
+    background-color: #FFD56D !important;
+    border-color: #FFD56D !important;
+    color: #58371F !important;
+}
+.BookCars_dropdown--list
+{
+    background-color: rgb(243, 218, 156) !important;
+    color: #58371F !important;
+
+}
+.BookCars_dropdown--listItem
+{
+    text-decoration: none !important;
+    color: #58371F !important;
+    
+
+}
+.BooksListing
+{
+    display: flex;
+    flex-direction: row;
+    margin:25px
+}
+.checked
+{
+    color:#c59b08;
+}
