@@ -28,31 +28,20 @@ library.add(faPlus);
 export const MyContext = React.createContext({ users: Users });
 class App extends React.PureComponent {
     state = {
-        users: Users,
-        Books: Books,
-        Authors: Authors,
-        loginedUser: {}
+        loggedInUser: {}
     }
-    addNewUser = (newUser) => {
-        const { users } = this.state;
-        this.setState({ users: [...users, newUser] });
-    }
-    addLoginedUser = (loginedUser) => {
-        this.setState({ loginedUser });
-    }
-    updateAuthors = (updatedAuthors) => {
-        this.setState({ Authors: updatedAuthors });
+    addLoggedInUser = (loggedInUser) => {
+        this.setState({ loggedInUser }, () => { console.log(this.state.loggedInUser) });
     }
     render() {
         const value = {
             state: this.state,
-            addNewUser: this.addNewUser,
-            addLoginedUser: this.addLoginedUser,
-            updateAuthors: this.updateAuthors,
+            addLoggedInUser: this.addLoggedInUser,
+
         }
 
 
-        if (Object.keys(this.state.loginedUser).length == 0)
+        if (Object.keys(this.state.loggedInUser).length == 0)
             return (
                 <MyContext.Provider value={value}>
                     <Router>

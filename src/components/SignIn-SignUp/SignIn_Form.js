@@ -5,37 +5,40 @@ import { Form } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { Image } from 'react-bootstrap';
 import { MyContext } from '../../App';
+import { login } from '../../API/User';
 import Logo from '../../images/logo.png';
 import './Style.css';
 
 class SignIn extends React.PureComponent {
 
     state = {
-        enteredMail: '',
-        enteredPassword: '',
+        email: '',
+        password: '',
         enteredDataValidation: ''
     }
-    handleSubmit = (existingUsers, addLoginedUser) => (event) => {
+    handleSubmit = (addLoggedInUser) => (event) => {
         event.preventDefault();
-        const user = existingUsers.find(element => {
-            if (element.email === this.state.enteredMail)
-                return element;
-        })
-        if (user === undefined)
-            this.setState({ enteredDataValidation: 'account not exist' })
+        const { email, password } = this.state;
+
+        if (email === '' && password === '')
+            this.setState({ enteredDataValidation: 'Enter email and password please' })
+        else if (password === '')
+            this.setState({ enteredDataValidation: 'Enter password please' })
+        else if (email === '')
+            this.setState({ enteredDataValidation: 'Enter email please' })
+
         else {
-            if (user.password === this.state.enteredPassword && user.Admin === false) {
-                this.setState({ enteredDataValidation: 'vaild user' })
-                addLoginedUser(user);
-                this.props.history.push('/user/home');
-            }
-            else if (user.password === this.state.enteredPassword && user.Admin === true) {
-                this.setState({ enteredDataValidation: 'vaild admin' })
-                addLoginedUser(user);
-                this.props.history.push('/user/home');
-            }
-            else
-                this.setState({ enteredDataValidation: 'incorrect password' })
+            login({ email, password })
+                .then(res => {
+
+                    localStorage.setItem('userToken', res.token);
+                    addLoggedInUser(res.profile);
+                    alert('loggedin')
+                })
+                .catch(err => {
+
+                    this.setState({ enteredDataValidation: 'Incorrect mail or password' })
+                })
         }
 
 
@@ -58,17 +61,17 @@ class SignIn extends React.PureComponent {
                                 <Navbar.Brand style={{ marginLeft: '50px' }}><Image src={Logo} /></Navbar.Brand>
                                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                                 <Navbar.Collapse id="basic-navbar-nav">
-                                    <Form inline className="SignIn_Form" onSubmit={this.handleSubmit(value.state.users, value.addLoginedUser)}>
+                                    <Form inline className="SignIn_Form" onSubmit={this.handleSubmit(value.addLoggedInUser)}>
                                         <Form.Group className="mr-2" >
-                                            <Form.Control type="email" name='enteredMail' placeholder="Enter email" onChange={this.handleChange} value={this.state.enteredMail} />
+                                            <Form.Control type="email" name='email' placeholder="Enter email" onChange={this.handleChange} value={this.state.email} />
                                         </Form.Group>
                                         <Form.Group className="mr-2" >
-                                            <Form.Control type="password" name='enteredPassword' placeholder="Password" onChange={this.handleChange} value={this.state.enteredPassword} />
+                                            <Form.Control type="password" name='password' placeholder="Password" onChange={this.handleChange} value={this.state.password} />
                                         </Form.Group>
                                         <Button variant="primary" type="submit" className="mr-2 SignIn_form-btn">
                                             Sign in
                                           </Button>
-                                        <Form.Text style={{ color: "red" }}>{this.state.enteredDataValidation}</Form.Text>
+                                        <Form.Text style={{ color: 'darkred', fontWeight: 'bold' }}>{this.state.enteredDataValidation}</Form.Text>
                                     </Form>
 
                                 </Navbar.Collapse>

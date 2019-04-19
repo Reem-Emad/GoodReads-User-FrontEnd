@@ -21,3 +21,10 @@
     margin:auto !important;
 
 }
+.popupMsg_btn
+{
+    background-color: #58371F !important;
+    border-color: #58371F !important;
+    margin: auto;
+    width: 20%;
+}
