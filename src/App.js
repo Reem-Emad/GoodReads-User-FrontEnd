@@ -61,11 +61,13 @@ class App extends React.PureComponent {
                         <Switch>
                             <Route exact path="/" component={HomePage} />
                             <Route exact path="/user/home" component={UserHome} />
-                            <Route exact path="/user/books" component={BooksList} />
                             <Route exact path="/user/categories" component={Categories} />
                             <Route exact path="/user/authors" component={AllAuthors} />
+                            <Route exact path="/user/books" component={BooksList} />
                             <Route exact path="/bookDetailes/:id" component={BookDetailes} />
                             <Route exact path="/AuthorDetailes/:id" component={AuthorDetails} />
+                            <Route exact path="/authors" component={AllAuthors} />
+
                         </Switch>
 
                     </Router>

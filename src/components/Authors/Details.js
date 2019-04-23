@@ -1,25 +1,33 @@
 import React from 'react';
-import author from '../../Authors';
 import Navbar from '../Shared/Navbar';
 import './Style.css';
-import { Dropdown, Row, Container, Col, Card, Button, ButtonGroup, ListGroup,ListGroupItem } from 'react-bootstrap';
+import { getAuthorById } from '../../API/Author';
+import { Link } from 'react-router-dom';
+import { Dropdown, Row, Container, Col, Card, Button, ButtonGroup, ListGroup, ListGroupItem } from 'react-bootstrap';
 class AuthorDetails extends React.Component {
+    state = {
+        author: {},
+        numOfBooks: 0
+    }
+    componentDidMount() {
+        getAuthorById(this.props.match.params.id)
+            .then(res => {
+                this.setState({ author: res });
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     render() {
-        const id = this.props.match.params.id;
-        console.log(id);
-        let Author = author.find((a) => {
-            return (a.id === id);
-        });
-        console.log(Author);
         return (
             <>
-            <Navbar></Navbar>
+                {console.log(this.state.author)}
                 <Container className="detailedCard">
                     <Row>
                         <Col sm="1"></Col>
                         <Col sm="3">
                             <Card style={{ width: '15rem', height: '20rem' }}>
-                                <Card.Img className="imgMargin" variant="top" src={Author.Image} />
+                                <Card.Img className="imgMargin" variant="top" src={this.state.author.Image} />
                                 <Dropdown as={ButtonGroup}>
                                     <Button variant="success">Follow Author</Button>
 
@@ -41,20 +49,22 @@ class AuthorDetails extends React.Component {
                         <Col sm="8">
                             <Card style={{ width: '100%' }}>
                                 <Card.Body>
-                                    <Card.Title>{Author.Name}</Card.Title>
+                                    <Card.Title>{this.state.author.FullName}</Card.Title>
                                     <Card.Text>
-                                      {Author.Website}
+                                        {this.state.author.Website}
                                     </Card.Text>
                                 </Card.Body>
                                 <ListGroup className="list-group-flush">
-                                    <ListGroupItem>{Author.NumberOfFriends} Friends</ListGroupItem>
-                                    <ListGroupItem>{Author.NumberOfBooks} Books</ListGroupItem>
-                                    <ListGroupItem>{Author.Influences}</ListGroupItem>
-                                    <ListGroupItem>{Author.Genre}</ListGroupItem>
-                                    <ListGroupItem>{Author.Born}</ListGroupItem>
+                                    {/* <ListGroupItem>{this.state.author.NumberOfFriends} Friends</ListGroupItem> */}
+                                    <Link to={`/user/books`}>
+                                        <ListGroupItem>{this.state.numOfBooks} Books</ListGroupItem>
+                                    </Link>
+                                    <ListGroupItem>{this.state.author.Influences}</ListGroupItem>
+                                    <ListGroupItem>{this.state.author.Genre}</ListGroupItem>
+                                    <ListGroupItem>{this.state.author.Born}</ListGroupItem>
                                 </ListGroup>
                                 <Card.Body>
-                                   {Author.Dscription}
+                                    {this.state.author.Description}
                                 </Card.Body>
                             </Card>
                         </Col>

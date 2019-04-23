@@ -1,18 +1,35 @@
 import React from 'react';
-import authors from '../../Authors';
 import Navbar from '../Shared/Navbar';
 import BasicCard from './Basic-card';
 import { Row } from 'react-bootstrap';
+import { getAuthors } from '../../API/Author'
 class AllAuthors extends React.Component {
+    state = {
+        AllAuthor: []
+    }
+    componentDidMount() {
+        getAuthors()
+            .then(res => {
+                this.setState({ AllAuthor: res });
+                // console.log(this.state.AllAuthor)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    }
     render() {
         return (
             <>
-               <Navbar></Navbar>
+                {/* <Navbar></Navbar> */}
                 <Row className="no-gutters">
                     {
-                        authors.map((a) => <BasicCard key={a.id} id={a.id} image={a.Image} name={a.Name} />)
+                        this.state.AllAuthor.map((a) => <BasicCard key={a.id} id={a._id} image={a.Image} name={a.FullName} />)
+
                     }
                 </Row>
+
+
             </>
         )
     }
