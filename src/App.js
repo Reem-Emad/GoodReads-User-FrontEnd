@@ -19,7 +19,7 @@ import AllAuthors from './components/Authors/List';
 import Authors from './Authors';
 import Books from './Books';
 import Users from './Users';
-
+import getBooksByAuthors from './components/Books/ListByAuthor';
 
 library.add(faEdit);
 library.add(faTrashAlt);
@@ -64,6 +64,7 @@ class App extends React.PureComponent {
                             <Route exact path="/user/categories" component={Categories} />
                         <Route exact path="/user/authors" component={AllAuthors} />*/}
                             <Route exact path="/user/books" component={BooksList} />
+                            <Route exact path="/booksByAuthors/:name" component={getBooksByAuthors} />
                             <Route exact path="/bookDetailes/:id" component={BookDetailes} />
                             <Route exact path="/AuthorDetailes/:id" component={AuthorDetails} />
                             <Route exact path="/authors" component={AllAuthors} />

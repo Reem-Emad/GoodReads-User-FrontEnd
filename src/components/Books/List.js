@@ -1,26 +1,33 @@
 import React from 'react';
 import BasicCard from './Basic-Card'
-import Navbar from '../Shared/Navbar';
-import {Row} from 'react-bootstrap';
-import {MyContext} from '../../App';
-
+import { Row } from 'react-bootstrap';
+import {getBooks} from '../../API/Book'
 
 class BooksList extends React.Component {
+    state={
+        AllBooks:[]
+    }
+    componentDidMount()
+    {
+        getBooks()
+            .then(res => {
+                this.setState({ AllBooks: res });
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     render() {
         return (
-            <MyContext.Consumer>
-                {value=>(
             <>
-            <Navbar></Navbar>
-            <Row className="no-gutters">
-                {value.state.Books.map(b => <BasicCard key={b.id} id={b.id}
-                   cover={b.cover} title={b.title} author={b.author} >
-                </BasicCard>)
-            }
-            </Row>
+                {/* <Navbar></Navbar> */}
+                <Row className="no-gutters">
+                    {this.state.AllBooks.map(b => <BasicCard key={b._id} id={b._id}
+                        cover={b.cover} title={b.title} author={b.author} >
+                    </BasicCard>)
+                    }
+                </Row>
             </>
-                )}
-            </MyContext.Consumer>
         )
 
     }

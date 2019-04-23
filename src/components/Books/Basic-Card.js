@@ -1,17 +1,30 @@
 import React from 'react';
-import Authors from '../../Authors';
 import { Link, withRouter } from 'react-router-dom';
 import { Col, Card } from 'react-bootstrap';
+import { getAuthors } from '../../API/Author'
 class BasicCard extends React.Component {
 
-    getAuthor = (name) => (e) => {
+    state = {
+        Authors: []
+    }
+    componentDidMount() {
+        getAuthors()
+            .then(res => {
+                this.setState({ Authors: res });
+            })
+            .catch(err => {
+                console.log(err)
+            })
 
-        const author = Authors.find(element => {
-            if (element.Name === name)
+    }
+    getAuthor = (name) => (e) => {
+        const author = this.state.Authors.find(element => {
+            console.log(element.FullName)
+            if (element.FullName === name)
                 return element;
         })
-        this.props.history.push(`/authorDetailes/${author.id}`);
-
+        if (author != undefined)
+            this.props.history.push(`/authorDetailes/${author._id}`);
     }
     render() {
 
@@ -26,7 +39,7 @@ class BasicCard extends React.Component {
                                 <Card.Title>{this.props.title} </Card.Title>
                             </Link>
                             By:
-                                <Card.Text onClick={this.getAuthor(this.props.author)} style={{ textDecoration: 'underline', color: '#009CDA', cursor: 'pointer' }}>{this.props.author} </Card.Text>
+                            <Card.Text onClick={this.getAuthor(this.props.author)} style={{ textDecoration: 'underline', color: '#009CDA', cursor: 'pointer' }}>{this.props.author} </Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>

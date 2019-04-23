@@ -11,7 +11,6 @@ class AllAuthors extends React.Component {
         getAuthors()
             .then(res => {
                 this.setState({ AllAuthor: res });
-                // console.log(this.state.AllAuthor)
             })
             .catch(err => {
                 console.log(err)

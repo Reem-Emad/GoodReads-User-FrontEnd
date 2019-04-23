@@ -1,36 +1,35 @@
 import React from 'react';
-import books from '../../Books';
-import Authors from '../../Authors';
 import Navbar from '../Shared/Navbar';
 import './Style.css';
 import { Dropdown, Row, Container, Col, Card, Button, ButtonGroup } from 'react-bootstrap';
-
+import { getBooksById } from '../../API/Book'
 class BookDetails extends React.Component {
-    getAuthor = (name) => (e) => {
-
-        const author = Authors.find(element => {
-            if (element.Name === name)
-                return element;
-        })
-        this.props.history.push(`/authorDetailes/${author.id}`);
+    state = {
+        Book: {}
+    }
+    componentDidMount() {
+        console.log(this.props)
+        const id = this.props.match.params.id;
+        getBooksById(id)
+            .then(res => {
+                this.setState({ Book: res });
+            })
+            .catch(err => {
+                console.log(err)
+            })
 
     }
     render() {
-        const id = this.props.match.params.id;
-
-        let Book = books.find((b) => {
-            return (b.id === +id);
-        });
 
         return (
             <>
-                <Navbar></Navbar>
+                {/* <Navbar></Navbar> */}
                 <Container className="detailedCard">
                     <Row>
                         <Col md="1"></Col>
                         <Col md="3">
                             <Card style={{ width: '15rem', height: '20rem' }}>
-                                <Card.Img className="imgMargin" variant="top" src={Book.cover} />
+                                <Card.Img className="imgMargin" variant="top" src={this.state.Book.cover} />
                                 <Dropdown as={ButtonGroup}>
                                     <Button variant="success">Want to Read</Button>
 
@@ -60,8 +59,8 @@ class BookDetails extends React.Component {
                         <Col md="8">
                             <Card style={{ width: '100%', border: 'none' }}>
                                 <Card.Body>
-                                    <Card.Title>{Book.title}</Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted" style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={this.getAuthor(Book.author)}>By {Book.author}</Card.Subtitle>
+                                    <Card.Title>{this.state.Book.title}</Card.Title>
+                                    <Card.Subtitle className="mb-2 text-muted" style={{ cursor: 'pointer', textDecoration: 'underline' }}>By {this.state.Book.author}</Card.Subtitle>
                                     {/* rating */}
 
                                     <div className="rate">
@@ -82,10 +81,10 @@ class BookDetails extends React.Component {
                                     {/* rating */}
 
                                     <Card.Text className="fontStyle">
-                                        {Book.description}
+                                        {this.state.Book.description}
                                     </Card.Text>
-                                    <Card.Text >{Book.pages} Page </Card.Text>
-                                    <Card.Text >{Book.category}</Card.Text>
+                                    <Card.Text >{this.state.Book.numOfpages} Page </Card.Text>
+                                    <Card.Text >{this.state.Book.category}</Card.Text>
                                 </Card.Body>
                             </Card>
 

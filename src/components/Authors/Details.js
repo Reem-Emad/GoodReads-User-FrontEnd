@@ -3,11 +3,14 @@ import Navbar from '../Shared/Navbar';
 import './Style.css';
 import { getAuthorById } from '../../API/Author';
 import { Link } from 'react-router-dom';
+import { getBooks } from '../../API/Book'
 import { Dropdown, Row, Container, Col, Card, Button, ButtonGroup, ListGroup, ListGroupItem } from 'react-bootstrap';
+import ListBooksByAuthor from '../Books/ListByAuthor';
 class AuthorDetails extends React.Component {
     state = {
         author: {},
-        numOfBooks: 0
+        // numOfBooks: 0,
+        // books: []
     }
     componentDidMount() {
         getAuthorById(this.props.match.params.id)
@@ -21,7 +24,6 @@ class AuthorDetails extends React.Component {
     render() {
         return (
             <>
-                {console.log(this.state.author)}
                 <Container className="detailedCard">
                     <Row>
                         <Col sm="1"></Col>
@@ -56,7 +58,7 @@ class AuthorDetails extends React.Component {
                                 </Card.Body>
                                 <ListGroup className="list-group-flush">
                                     {/* <ListGroupItem>{this.state.author.NumberOfFriends} Friends</ListGroupItem> */}
-                                    <Link to={`/user/books`}>
+                                    <Link to={`/booksByAuthors/${this.state.author.FullName}`}>
                                         <ListGroupItem> Books</ListGroupItem>
                                     </Link>
                                     <ListGroupItem>{this.state.author.Influences}</ListGroupItem>
