@@ -57,7 +57,7 @@ class AuthorDetails extends React.Component {
                                 <ListGroup className="list-group-flush">
                                     {/* <ListGroupItem>{this.state.author.NumberOfFriends} Friends</ListGroupItem> */}
                                     <Link to={`/user/books`}>
-                                        <ListGroupItem>{this.state.numOfBooks} Books</ListGroupItem>
+                                        <ListGroupItem> Books</ListGroupItem>
                                     </Link>
                                     <ListGroupItem>{this.state.author.Influences}</ListGroupItem>
                                     <ListGroupItem>{this.state.author.Genre}</ListGroupItem>

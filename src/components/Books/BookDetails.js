@@ -3,28 +3,28 @@ import books from '../../Books';
 import Authors from '../../Authors';
 import Navbar from '../Shared/Navbar';
 import './Style.css';
-import { Dropdown, Row, Container, Col, Card, Button ,ButtonGroup} from 'react-bootstrap';
+import { Dropdown, Row, Container, Col, Card, Button, ButtonGroup } from 'react-bootstrap';
 
 class BookDetails extends React.Component {
-    getAuthor=(name)=>(e)=>{
+    getAuthor = (name) => (e) => {
 
-        const author= Authors.find(element => {
-             if(element.Name===name)
+        const author = Authors.find(element => {
+            if (element.Name === name)
                 return element;
-         })
-         this.props.history.push(`/authorDetailes/${author.id}`);
-             
-           }
+        })
+        this.props.history.push(`/authorDetailes/${author.id}`);
+
+    }
     render() {
         const id = this.props.match.params.id;
 
         let Book = books.find((b) => {
             return (b.id === +id);
         });
-             
+
         return (
             <>
-               <Navbar></Navbar>
+                <Navbar></Navbar>
                 <Container className="detailedCard">
                     <Row>
                         <Col md="1"></Col>
@@ -54,14 +54,14 @@ class BookDetails extends React.Component {
                                     <input type="radio" id="star1" name="rate" value="1" />
                                     <label htmlFor="star1" title="text">1 stars</label>
                                 </div>
-                             
+
                             </Card>
                         </Col>
                         <Col md="8">
                             <Card style={{ width: '100%', border: 'none' }}>
                                 <Card.Body>
                                     <Card.Title>{Book.title}</Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted" style={{cursor: 'pointer',textDecoration:'underline'}} onClick={this.getAuthor(Book.author)}>By {Book.author}</Card.Subtitle>
+                                    <Card.Subtitle className="mb-2 text-muted" style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={this.getAuthor(Book.author)}>By {Book.author}</Card.Subtitle>
                                     {/* rating */}
 
                                     <div className="rate">
