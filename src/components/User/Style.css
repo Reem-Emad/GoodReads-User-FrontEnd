@@ -40,5 +40,9 @@
 }
 .checked
 {
-    color:#c59b08;
+    color:#ffcf22;
+}
+.stars:hover{
+    color:#ffcf22;
+
 }

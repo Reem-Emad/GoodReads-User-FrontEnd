@@ -5,7 +5,7 @@ import { Form } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { Image } from 'react-bootstrap';
 import { MyContext } from '../../App';
-import { login } from '../../API/User';
+import { login, getProfile } from '../../API/User';
 import Logo from '../../images/logo.png';
 import './Style.css';
 
@@ -32,8 +32,12 @@ class SignIn extends React.PureComponent {
                 .then(res => {
 
                     localStorage.setItem('userToken', res.token);
-                    addLoggedInUser(res.profile);
-                    alert('loggedin')
+                    getProfile()
+                        .then(res => { addLoggedInUser(res) })
+                        .catch(err => {
+                            this.setState({ enteredDataValidation: 'please try again later' })
+                        })
+                    this.props.history.push('/user/home');
                 })
                 .catch(err => {
 

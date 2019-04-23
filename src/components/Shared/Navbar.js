@@ -42,12 +42,12 @@ class NavBar extends React.PureComponent {
                                         <Button variant="outline-success" className='navbarSearchBtn'>Search</Button>
                                     </Form>
                                     {
-                                        value.state.loginedUser.image === 'N/A' || value.state.loginedUser.image === '' ?
+                                        value.state.loggedInUser.image === 'N/A' || value.state.loggedInUser.image === '' ?
                                             <Image src={Default} roundedCircle style={{ marginLeft: '200px', width: '65px', height: '60px' }} />
                                             :
-                                            <Image src={value.state.loginedUser.image} roundedCircle style={{ marginLeft: '200px', width: '65px', height: '60px' }} />
+                                            <Image src={value.state.loggedInUser.image} roundedCircle style={{ marginLeft: '200px', width: '65px', height: '60px' }} />
                                     }
-                                    <div style={{ color: '#382110', marginLeft: '7px', fontWeight: 'bold' }}>{value.state.loginedUser.FName} {value.state.loginedUser.LName}</div>
+                                    <div style={{ color: '#382110', marginLeft: '7px', fontWeight: 'bold' }}>{value.state.loggedInUser.name.fname} {value.state.loggedInUser.name.lname}</div>
                                     <Button variant="primary" size="sm" className='navbarSearchBtn' style={{ marginLeft: '100px' }} onClick={this.handleLogOut} >
                                         log out
                         </Button>
