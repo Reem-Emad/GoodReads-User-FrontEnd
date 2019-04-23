@@ -1,125 +1,85 @@
 import React from 'react';
 import './Style.css';
-
 import { Card, ListGroup } from 'react-bootstrap';
 import { MyContext } from '../../App';
 import NavBar from '../Shared/Navbar';
 import PaginationComponent from '../Shared/Pagination';
 import BookCard from './BookCard';
-
+import { getAllBooks, getReadBooks, getWantBooks, getReadingBooks } from '../../API/User';
 
 class UserHome extends React.PureComponent {
     state = {
-        showedBooks: [],
-        showedBooksState: [],
         clickedFilter: 'All',
+        userShowedBooks: [],
+        error: ''
     }
-    getAllBooks = (allBooks, Books) => {
-        let books = [];
-        allBooks.map(book => Books.find(element => {
-            if (element.id === book.id)
-                books.push(<BookCard key={element.id} {...element} state={book.state} ></BookCard>);
-        }))
-        return books;
-
+    componentDidMount = () => {
+        getAllBooks()
+            .then(res => { this.setState({ userShowedBooks: res }) })
+            .catch(err => { this.setState({ error: "server error" }) });
     }
-    handleClick = (loginedUser, Books) => (e) => {
-        // debugger;
-        let filter = e.target.name;
-        this.setState({ clickedFilter: filter });
-        let booksIDs = [];
-        let states = [];
-        if (filter === 'All') {
-            // booksIDs=loginedUser.all;
-            loginedUser.books.map(book => { booksIDs.push(book.id); states.push(book.state) });
+    handleClick = (e) => {
+        const name = e.target.name;
+        if (name === "Read") {
+            getReadBooks()
+                .then(res => { this.setState({ userShowedBooks: res, clickedFilter: name }) })
+                .catch(err => { this.setState({ error: "server error" }) });
         }
-        else if (filter === 'Currently Reading') {
-            // booksIDs=loginedUser.reading;
-            loginedUser.books.map(book => {
-                if (book.state === 'Reading') {
-                    booksIDs.push(book.id);
-                    states.push(book.state);
-                }
-            });
-
-
+        else if (name === "All") {
+            getAllBooks()
+                .then(res => { this.setState({ userShowedBooks: res, clickedFilter: name }) })
+                .catch(err => { this.setState({ error: "server error" }) });
         }
-        else if (filter === 'Read') {
-            // booksIDs=loginedUser.read;
-            loginedUser.books.map(book => {
-                if (book.state === 'Read') {
-                    booksIDs.push(book.id);
-                    states.push(book.state);
-                }
-            });
+        else if (name === "Want To Read") {
+            getWantBooks()
+                .then(res => { this.setState({ userShowedBooks: res, clickedFilter: name }) })
+                .catch(err => { this.setState({ error: "server error" }) });
         }
         else {
-            // booksIDs=loginedUser.wantToRead;
-
-            loginedUser.books.map(book => {
-                if (book.state === 'Want To Read') {
-                    booksIDs.push(book.id);
-                    states.push(book.state);
-                }
-            });
+            getReadingBooks()
+                .then(res => { this.setState({ userShowedBooks: res, clickedFilter: name }) })
+                .catch(err => { this.setState({ error: "server error" }) });
         }
-        let books = [];
-        booksIDs.map(bookID => Books.find(element => {
-            if (element.id === bookID)
-                books.push(element);
-        }))
-        this.setState({ showedBooks: books, showedBooksState: states });
+
     }
     render() {
         return (
+            <>
 
-            <MyContext.Consumer>
+                <NavBar></NavBar>
+                <div className='BooksListing'>
 
-                {value =>
-                    (
-                        <>
+                    <ListGroup style={{ width: '20rem' }}>
+                        <ListGroup.Item action name='All' onClick={this.handleClick}>
+                            All
+                                </ListGroup.Item>
+                        <ListGroup.Item action name='Currently Reading' onClick={this.handleClick}>
+                            curently Reading
+                                  </ListGroup.Item>
+                        <ListGroup.Item action name='Read' onClick={this.handleClick}>
+                            Read
+                                 </ListGroup.Item>
+                        <ListGroup.Item action name='Want To Read' onClick={this.handleClick}>
+                            want to read
+                                </ListGroup.Item>
+                    </ListGroup>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <Card style={{ width: '15rem', marginLeft: '20px' }}>
+                            <Card.Body>{this.state.clickedFilter}</Card.Body>
+                        </Card>
+                        <div style={{}}>
+                            {
 
-                            <NavBar></NavBar>
-                            <div className='BooksListing'>
+                                this.state.userShowedBooks.map(book => <BookCard key={book.bookId._id} {...book} clickedFilter={this.state.clickedFilter} />)
 
-                                <ListGroup style={{ width: '20rem' }}>
-                                    <ListGroup.Item action name='All' onClick={this.handleClick(value.state.loginedUser, value.state.Books)}>
-                                        All
-                </ListGroup.Item>
-                                    <ListGroup.Item action name='Currently Reading' onClick={this.handleClick(value.state.loginedUser, value.state.Books)}>
-                                        curently Reading
-                 </ListGroup.Item>
-                                    <ListGroup.Item action name='Read' onClick={this.handleClick(value.state.loginedUser, value.state.Books)}>
-                                        Read
-                 </ListGroup.Item>
-                                    <ListGroup.Item action name='Want To Read' onClick={this.handleClick(value.state.loginedUser, value.state.Books)}>
-                                        want to read
-                 </ListGroup.Item>
-                                </ListGroup>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <Card style={{ width: '15rem', marginLeft: '20px' }}>
-                                        <Card.Body>{this.state.clickedFilter}</Card.Body>
-                                    </Card>
-                                    <div style={{}}>
-                                        {
+                            }
+                        </div>
+                        <PaginationComponent></PaginationComponent>
+                    </div>
+                </div>
 
-                                            this.state.showedBooks.length == 0 && value.state.loginedUser.books.length != 0 ?
-                                                this.getAllBooks(value.state.loginedUser.books, value.state.Books)
-                                                :
+            </>
 
-                                                this.state.showedBooks.map((book, index) => (<BookCard key={book.id} {...book} clickedFilter={this.state.clickedFilter} state={this.state.showedBooksState[index]}></BookCard>))
-
-
-                                        }
-                                    </div>
-                                    <PaginationComponent></PaginationComponent>
-                                </div>
-                            </div>
-
-                        </>
-                    )
-                }
-            </MyContext.Consumer>
         )
     }
 }

@@ -24,7 +24,7 @@ class BasicCard extends React.Component {
                 return element;
         })
         if (author != undefined)
-            this.props.history.push(`/authorDetailes/${author._id}`);
+            this.props.history.push(`/AuthorDetailes/${author._id}`);
     }
     render() {
 
