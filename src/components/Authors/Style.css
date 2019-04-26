@@ -1,9 +1,16 @@
-.imgMargin
-{
+.imgMargin {
     margin-bottom: 10px;
 }
-.detailedCard
-{
+
+.detailedCard {
     margin-top: 35px;
-   
+
+}
+
+.toggle-content {
+    display: none;
+}
+
+.toggle-content.is-visible {
+    display: block;
 }

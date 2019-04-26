@@ -1,14 +1,13 @@
 import React from 'react';
 import BasicCard from './Basic-Card'
 import { Row } from 'react-bootstrap';
-import {getBooks} from '../../API/Book'
+import { getBooks } from '../../API/Book'
 
 class BooksList extends React.Component {
-    state={
-        AllBooks:[]
+    state = {
+        AllBooks: []
     }
-    componentDidMount()
-    {
+    componentDidMount() {
         getBooks()
             .then(res => {
                 this.setState({ AllBooks: res });
@@ -23,7 +22,7 @@ class BooksList extends React.Component {
                 {/* <Navbar></Navbar> */}
                 <Row className="no-gutters">
                     {this.state.AllBooks.map(b => <BasicCard key={b._id} id={b._id}
-                        cover={b.cover} title={b.title} author={b.author} >
+                        cover={b.cover} title={b.title} author={b.author} authorData={b.authorData}>
                     </BasicCard>)
                     }
                 </Row>

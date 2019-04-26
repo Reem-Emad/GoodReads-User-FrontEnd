@@ -7,10 +7,12 @@ import { getBooks } from '../../API/Book'
 import { Dropdown, Row, Container, Col, Card, Button, ButtonGroup, ListGroup, ListGroupItem } from 'react-bootstrap';
 import ListBooksByAuthor from '../Books/ListByAuthor';
 class AuthorDetails extends React.Component {
-    state = {
-        author: {},
-        // numOfBooks: 0,
-        // books: []
+    constructor() {
+        super()
+        this.state = {
+            author: {},
+            isHidden: true
+        }
     }
     componentDidMount() {
         getAuthorById(this.props.match.params.id)
@@ -21,7 +23,19 @@ class AuthorDetails extends React.Component {
                 console.log(err)
             })
     }
+    Hide() {
+
+        this.setState({ isHidden: !this.state.isHidden })
+    }
+
     render() {
+        let shown = {
+            display: this.state.isHidden ? "block" : "none"
+        };
+
+        let hidden = {
+            display: this.state.isHidden ? "none" : "block"
+        }
         return (
             <>
                 <Container className="detailedCard">
@@ -57,10 +71,6 @@ class AuthorDetails extends React.Component {
                                     </Card.Text>
                                 </Card.Body>
                                 <ListGroup className="list-group-flush">
-                                    {/* <ListGroupItem>{this.state.author.NumberOfFriends} Friends</ListGroupItem> */}
-                                    <Link to={`/booksByAuthors/${this.state.author.FullName}`}>
-                                        <ListGroupItem> Books</ListGroupItem>
-                                    </Link>
                                     <ListGroupItem>{this.state.author.Influences}</ListGroupItem>
                                     <ListGroupItem>{this.state.author.Genre}</ListGroupItem>
                                     <ListGroupItem>{this.state.author.Born}</ListGroupItem>
@@ -72,6 +82,13 @@ class AuthorDetails extends React.Component {
                         </Col>
 
                     </Row>
+
+                    {/*  {!this.state.isHidden && <ListBooksByAuthor books={this.state.author.bookData} />} */}
+                    {/* <button onclick={this.Hide.bind(this)}>Books</button>
+                    <span style={shown}><ListBooksByAuthor books={this.state.author.bookData} /></span>
+                    <h2 style={hidden}></h2> */}
+                    <ListBooksByAuthor books={this.state.author.bookData} />
+
                 </Container>
 
             </>

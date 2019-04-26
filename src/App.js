@@ -41,16 +41,16 @@ class App extends React.PureComponent {
         }
 
 
-        if (Object.keys(this.state.loggedInUser).length == 0)
-            return (
-                <MyContext.Provider value={value}>
-                    <Router>
+        // if (Object.keys(this.state.loggedInUser).length == 0)
+        //     return (
+        //         <MyContext.Provider value={value}>
+        //             <Router>
 
-                        <Route exact to="/" component={HomePage}></Route>
+        //                 <Route exact to="/" component={HomePage}></Route>
 
-                    </Router>
-                </MyContext.Provider>
-            )
+        //             </Router>
+        //         </MyContext.Provider>
+        //     )
 
 
         return (
@@ -59,9 +59,9 @@ class App extends React.PureComponent {
                 <MyContext.Provider value={value}>
                     <Router>
                         <Switch>
-                            <Route exact path="/" component={HomePage} />
+                            {/* <Route exact path="/" component={HomePage} />
                             <Route exact path="/user/home" component={UserHome} />
-                            <Route exact path="/user/categories" component={Categories} />
+                            <Route exact path="/user/categories" component={Categories} /> */}
                             <Route exact path="/user/books" component={BooksList} />
                             <Route exact path="/booksByAuthors/:name" component={getBooksByAuthors} />
                             <Route exact path="/bookDetailes/:id" component={BookDetailes} />

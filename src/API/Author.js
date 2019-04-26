@@ -5,7 +5,7 @@ export const getAuthors = () => {
     return axois.get(`${BACKEND_URL}/api/authors`, {
     })
         .then(res => {
-            // console.log(res.data);
+            console.log(res.data);
             return res.data;
 
         })
