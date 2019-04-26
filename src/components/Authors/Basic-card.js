@@ -10,7 +10,7 @@ class BasicCard extends React.Component {
                     <Card.Img variant="top" src={this.props.image} style={{ height: '20rem' }} />
                     <Card.Body>
                         <Link to={`/AuthorDetailes/${this.props.id}`}>
-                            <Card.Title>{this.props.name} </Card.Title>
+                            <Card.Title>{this.props.name}</Card.Title>
                         </Link>
                     </Card.Body>
                 </Card>

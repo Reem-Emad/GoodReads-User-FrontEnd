@@ -5,7 +5,8 @@ import { Row } from 'react-bootstrap';
 import { getAuthors } from '../../API/Author'
 class AllAuthors extends React.Component {
     state = {
-        AllAuthor: []
+        AllAuthor: [],
+        error: ""
     }
     componentDidMount() {
         getAuthors()
@@ -13,17 +14,17 @@ class AllAuthors extends React.Component {
                 this.setState({ AllAuthor: res });
             })
             .catch(err => {
-                console.log(err)
+                this.setState = { error: "Server Error" }
             })
 
     }
     render() {
         return (
             <>
-                {/* <Navbar></Navbar> */}
+                <Navbar></Navbar>
                 <Row className="no-gutters">
                     {
-                        this.state.AllAuthor.map((a) => <BasicCard key={a.id} id={a._id} image={a.Image} name={a.FullName} />)
+                        this.state.AllAuthor.map(author => <BasicCard key={author.id} id={author._id} image={author.Image} name={author.FullName} />)
 
                     }
                 </Row>

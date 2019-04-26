@@ -9,8 +9,7 @@ import ListBooksByAuthor from '../Books/ListByAuthor';
 class AuthorDetails extends React.Component {
     state = {
         author: {},
-        // numOfBooks: 0,
-        // books: []
+        error: ""
     }
     componentDidMount() {
         getAuthorById(this.props.match.params.id)
@@ -18,33 +17,21 @@ class AuthorDetails extends React.Component {
                 this.setState({ author: res });
             })
             .catch(err => {
-                console.log(err)
+                this.setState({ error: "Server Error" });
+
             })
     }
     render() {
         return (
             <>
+            <Navbar/>
                 <Container className="detailedCard">
                     <Row>
                         <Col sm="1"></Col>
                         <Col sm="3">
                             <Card style={{ width: '15rem', height: '20rem' }}>
                                 <Card.Img className="imgMargin" variant="top" src={this.state.author.Image} />
-                                <Dropdown as={ButtonGroup}>
-                                    <Button variant="success">Follow Author</Button>
 
-                                    <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
-
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item hred="#/action-1">Add As a Friend</Dropdown.Item>
-                                        <Dropdown.Item hred="#/action-2">Send Message</Dropdown.Item>
-                                        <Dropdown.Item hred="#/action-3">Compare Books</Dropdown.Item>
-                                        <Dropdown.Item hred="#/action-3">Add to My Favorite Authors</Dropdown.Item>
-                                        <Dropdown.Item hred="#/action-3">Edit My Favorite Authors</Dropdown.Item>
-                                        <Dropdown.Item hred="#/action-3">See All Authors I Follow</Dropdown.Item>
-
-                                    </Dropdown.Menu>
-                                </Dropdown>
                             </Card>
                         </Col>
 

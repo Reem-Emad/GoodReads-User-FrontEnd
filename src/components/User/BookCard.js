@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Books from '../../Books';
 import Authors from '../../Authors';
 import { editBookRate, editBookStatus } from '../../API/User';
+import { getBooksById } from '../../API/Book';
 import StarRatingComponent from 'react-star-rating-component';
 import './Style.css';
 
@@ -42,25 +43,20 @@ class UserBookCard extends React.PureComponent {
             .catch(err => { this.setState({ error: "server error" }) })
     }
 
-    getBook = (title) => (e) => {
-        const book = Books.find(element => {
-            if (element.title === title)
-                return element;
-        })
-        this.props.history.push(`/bookDetailes/${book.id}`);
+    getBook = (e) => {
+
+        this.props.history.push(`/bookDetailes/${this.props.bookId.id}`);
 
     }
     getAuthor = (name) => (e) => {
-        const author = Authors.find(element => {
-            if (element.Name === name)
-                return element;
-        })
-        this.props.history.push(`/authorDetailes/${author.id}`);
+        getBooksById(this.props.bookId.id)
+            .then(res => { this.props.history.push(`/authorDetailes/${res.authorData[0].id}`) })
+            .catch(err => this.setState({ error: "server error" }))
+        //  this.props.history.push(`/authorDetailes/${author.id}`);
 
     }
     render() {
         const { title, author, cover, avgRate } = this.props.bookId;
-        // const { rate, status } = this.props
 
 
         let otherFilters = [];
@@ -77,7 +73,7 @@ class UserBookCard extends React.PureComponent {
                 <Card className="BookCard">
                     <Card.Img variant="top" src={cover} className="BookCard_img" />
                     <Card.Body>
-                        <Card.Text style={{ marginRight: '10px', textDecoration: 'underline', cursor: 'pointer' }} onClick={this.getBook(title)} ><span style={{ marginRight: '3px', color: '#58371F', fontWeight: 'Bold' }}>Title: </span>{title}</Card.Text>
+                        <Card.Text style={{ marginRight: '10px', textDecoration: 'underline', cursor: 'pointer' }} onClick={this.getBook} ><span style={{ marginRight: '3px', color: '#58371F', fontWeight: 'Bold' }}>Title: </span>{title}</Card.Text>
                         <Card.Text style={{ marginRight: '10px', textDecoration: 'underline', cursor: 'pointer' }} onClick={this.getAuthor(author)}><span style={{ marginRight: '3px', color: '#58371F', fontWeight: 'Bold' }}>Author: </span>{author}</Card.Text>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                             <Card.Text style={{ marginRight: '10px' }} ><span style={{ marginRight: '3px', color: '#58371F', fontWeight: 'Bold' }}>AVG Rating: </span>

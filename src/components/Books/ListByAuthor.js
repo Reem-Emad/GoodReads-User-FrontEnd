@@ -1,6 +1,8 @@
 import React from 'react';
 import { getBooks } from '../../API/Book';
 import BasicCard from './Basic-Card';
+import Navbar from '../Shared/Navbar';
+
 class AuthorBooks extends React.Component {
     state = {
         books: []
@@ -18,6 +20,7 @@ class AuthorBooks extends React.Component {
     render() {
         return (
             <>
+                <Navbar></Navbar>
                 {
 
                     this.state.books.filter(b => (b.author === this.props.match.params.name)).map(b => <div style={{ display: 'inline', margin: '20px' }} key={b._id} >
