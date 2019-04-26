@@ -4,32 +4,44 @@ import BasicCard from './Basic-Card';
 import Navbar from '../Shared/Navbar';
 
 class AuthorBooks extends React.Component {
-    state = {
-        books: []
-    }
-    componentDidMount() {
-        getBooks()
-            .then(res => {
-                this.setState({ books: res })
-            })
-            .catch(err => {
-                console.log(err)
-            })
+    // state = {
+    //     books: []
+    // }
+    // componentDidMount() {
+    //     getBooks()
+    //         .then(res => {
+    //             this.setState({ books: res })
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //         })
 
-    }
+    // }
     render() {
-        return (
-            <>
-                <Navbar></Navbar>
-                {
+        if (this.props.books != undefined) {
+            return (
+                <>
+                    
+                    {
 
-                    this.state.books.filter(b => (b.author === this.props.match.params.name)).map(b => <div style={{ display: 'inline', margin: '20px' }} key={b._id} >
-                        <BasicCard id={b._id} cover={b.cover} title={b.title} author={b.author} />
+                        this.props.books.map(b => <div style={{ display: 'inline', margin: '10px' }} key={b._id} >
+                            <BasicCard id={b._id} cover={b.cover} title={b.title} author={''} authorData={b.authorData} />
 
-                    </div>)
-                }
-            </>
-        )
+                        </div>)
+
+
+                    }
+                </>
+            )
+        }
+        else {
+            return (
+                <>
+                    
+                    <h5>There is No Books For these Category</h5>
+                </>
+            )
+        }
     }
 }
 export default AuthorBooks;

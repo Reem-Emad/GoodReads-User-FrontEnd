@@ -4,50 +4,68 @@ import Navbar from '../Shared/Navbar';
 import { Dropdown, Row, Container, Col } from 'react-bootstrap';
 import './Style.css';
 import ListByCategory from '../Books/ListByCategory';
+import { getCategories, getCategoriesById } from '../../API/Category';
 class Categories extends React.Component {
     state = {
-        selectedCategory: '',
+        booksForselectedCategory: [],
         NumberOfBooks: 0,
+        allCategory: []
     }
     selectedCategory = (j) => (e) => {
-        this.setState({ selectedCategory: j });
+        this.setState({ booksForselectedCategory: j });
+    }
+    componentDidMount() {
+        getCategories()
+            .then(res => {
+                this.setState({ allCategory: res });
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
     render() {
-        let eventKey = 1;
-        return (
-            <>
-                <Navbar></Navbar>
-                <Container className="Container">
-                    <Row>
+        console.log(this.state.allCategory)
+        if (this.state.allCategory.length > 0) {
+            let eventKey = 1;
+            return (
+                <>
+                    {/* <Navbar></Navbar> */}
+                    <Container className="Container">
+                        <Row>
 
-                    </Row>
-                    <Row>
-                        <Col sm="1"></Col>
-                        <Col sm="2">
-                            <Dropdown.Menu show>
-                                <Dropdown.Header>Favorite Genres:</Dropdown.Header>
+                        </Row>
+                        <Row>
+                            <Col sm="1"></Col>
+                            <Col sm="2">
+                                <Dropdown.Menu show>
+                                    <Dropdown.Header>Favorite Genres:</Dropdown.Header>
+                                    {
+                                        this.state.allCategory.map((c) => { eventKey = eventKey + 1; return (<div key={c._id}><Dropdown.Item onClick={this.selectedCategory(c)} eventKey={eventKey}>{c.name}</Dropdown.Item> </div>) })
+                                    }
+                                </Dropdown.Menu>
+                            </Col>
+                            <Col sm="9">
+                                <br></br>
                                 {
-                                    categories.map((c) => { eventKey = eventKey + 1; return (<div key={c.Id}><Dropdown.Item onClick={this.selectedCategory(c.Name)} eventKey={eventKey}>{c.Name}</Dropdown.Item> </div>) })
+                                    <ListByCategory books={this.state.booksForselectedCategory.bookData} />
                                 }
-                            </Dropdown.Menu>
-                        </Col>
-                        <Col sm="9">
-
-                            {this.state.selectedCategory}
-                            <br></br>
-                            {
-                                <ListByCategory selectedCategory={this.state.selectedCategory} />
-                            }
 
 
-                        </Col>
+                            </Col>
 
-                    </Row>
+                        </Row>
 
-                </Container>
+                    </Container>
 
-            </>
-        )
+                </>
+            )
+        }
+        else {
+            return (
+                <>
+                </>
+            )
+        }
     }
 }
 export default Categories;
