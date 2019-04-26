@@ -4,7 +4,8 @@ import { Col, Card } from 'react-bootstrap';
 import { getAuthors } from '../../API/Author'
 class BasicCard extends React.Component {
     getAuthor = () => (e) => {
-        if (this.props.authorData.length > 0 && this.props.authorData[0]._id != undefined)
+        console.log(this.props)
+        if (this.props.authorData != undefined && this.props.authorData.length > 0 && this.props.authorData[0]._id != undefined)
             this.props.history.push(`/AuthorDetailes/${this.props.authorData[0]._id}`);
         else {
             return <h2>Not Fount these author</h2>
@@ -23,7 +24,7 @@ class BasicCard extends React.Component {
                                 <Card.Title>{this.props.title} </Card.Title>
                             </Link>
 
-                            <Card.Text onClick={this.getAuthor()} style={{ textDecoration: 'underline', color: '#009CDA', cursor: 'pointer' }}>{this.props.author} </Card.Text>
+                            <Card.Text onClick={this.getAuthor().bind(this)} style={{ textDecoration: 'underline', color: '#009CDA', cursor: 'pointer' }}>{this.props.author} </Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>

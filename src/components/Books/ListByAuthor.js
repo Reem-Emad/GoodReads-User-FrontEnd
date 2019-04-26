@@ -22,7 +22,7 @@ class AuthorBooks extends React.Component {
                     {
 
                         this.props.books.map(b => <div style={{ display: 'inline', margin: '10px' }} key={b._id} >
-                            <BasicCard id={b._id} cover={b.cover} title={b.title} author={''} />
+                            <BasicCard id={b._id} cover={b.cover} title={b.title} author={''} authorData={b.authorData} />
 
                         </div>)
 
@@ -34,7 +34,7 @@ class AuthorBooks extends React.Component {
         else {
             return (
                 <>
-                    <h2>There is No Books For these author</h2>
+                    <h5>There is No Books For these Category</h5>
                 </>
             )
         }
