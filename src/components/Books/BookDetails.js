@@ -14,6 +14,17 @@ class BookDetails extends React.Component {
         showModal: false
 
     }
+    getAuthor = () => (e) => {
+        console.log(this.state.Book)
+        if (this.state.Book.authorData != undefined && this.state.Book.authorData.length > 0 && this.state.Book.authorData[0]._id != undefined)
+            this.props.history.push(`/AuthorDetailes/${this.state.Book.authorData[0]._id}`);
+        else {
+            return (
+                <>
+                </>
+            )
+        }
+    }
     componentDidMount() {
         const id = this.props.match.params.id;
         getBooksById(id)
@@ -25,7 +36,7 @@ class BookDetails extends React.Component {
             })
 
     }
-    
+
     showModal = () => {
         this.setState({ showModal: true });
     }
@@ -72,7 +83,7 @@ class BookDetails extends React.Component {
                             <Card style={{ width: '100%', border: 'none' }}>
                                 <Card.Body>
                                     <Card.Title>{this.state.Book.title}</Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted" >By {this.state.Book.author}</Card.Subtitle>
+                                    <Card.Subtitle onClick={this.getAuthor()} className="mb-2 text-muted authorselect" >By {this.state.Book.author}</Card.Subtitle>
                                     {/* rating */}
 
                                     <StarRatingComponent

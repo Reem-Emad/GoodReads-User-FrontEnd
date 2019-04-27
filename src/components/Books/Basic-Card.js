@@ -9,7 +9,10 @@ class BasicCard extends React.Component {
         if (this.props.authorData != undefined && this.props.authorData.length > 0 && this.props.authorData[0]._id != undefined)
             this.props.history.push(`/AuthorDetailes/${this.props.authorData[0]._id}`);
         else {
-            return <h2>Not Fount these author</h2>
+            return (
+                <>
+                </>
+            )
         }
     }
     render() {
