@@ -72,7 +72,7 @@ class BookDetails extends React.Component {
                             <Card style={{ width: '100%', border: 'none' }}>
                                 <Card.Body>
                                     <Card.Title>{this.state.Book.title}</Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted" >By {this.state.Book.author}</Card.Subtitle>
+                                    <Card.Subtitle className="mb-2 text-muted" style={{ cursor: 'pointer', textDecoration: 'underline' }} >By {this.state.Book.author}</Card.Subtitle>
                                     {/* rating */}
 
                                     <StarRatingComponent
