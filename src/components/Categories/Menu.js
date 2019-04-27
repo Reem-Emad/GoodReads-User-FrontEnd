@@ -20,7 +20,6 @@ class Categories extends React.Component {
                 this.setState({ allCategory: res });
             })
             .catch(err => {
-                console.log(err)
             })
     }
     render() {
@@ -29,7 +28,7 @@ class Categories extends React.Component {
             let eventKey = 1;
             return (
                 <>
-                    {/* <Navbar></Navbar> */}
+                    <Navbar></Navbar>
                     <Container className="Container">
                         <Row>
 

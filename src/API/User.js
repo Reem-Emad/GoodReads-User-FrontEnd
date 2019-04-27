@@ -42,3 +42,7 @@ export const editBookStatus = ({ bookId, status }) => {
     return axios.post(`${BackEnd_URL}/api/users/book/edit/${bookId}`, { status }, { headers: { authorization: `Bearer ${localStorage.getItem('userToken')}` } })
         .then(res => res.data);
 }
+export const addBook = ({ bookId, status }) => {
+    return axios.post(`${BackEnd_URL}/api/users/book/add`, { bookId, status }, { headers: { authorization: `Bearer ${localStorage.getItem('userToken')}` } })
+        .then(res => res.data);
+}

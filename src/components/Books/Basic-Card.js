@@ -17,15 +17,15 @@ class BasicCard extends React.Component {
         return (
             <>
 
-                <Col key={this.props.id} className="m-3">
+                <Col key={this.props.id} className="m-2">
                     <Card style={{ width: '15rem' }}>
-                        <Card.Img variant="top" src={this.props.cover} style={{ height: '10rem' }} />
+                        <Card.Img variant="top" src={this.props.cover} style={{ height: '15rem' }} />
                         <Card.Body>
                             <Link to={`/bookDetailes/${this.props.id}`}>
                                 <Card.Title>{this.props.title} </Card.Title>
                             </Link>
 
-                            <Card.Text onClick={this.getAuthor().bind(this)} style={{ textDecoration: 'underline', color: '#009CDA', cursor: 'pointer' }}>{this.props.author} </Card.Text>
+                            <Card.Text onClick={this.getAuthor} style={{ textDecoration: 'underline', color: '#009CDA', cursor: 'pointer' }}>{this.props.author} </Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>

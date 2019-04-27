@@ -3,13 +3,18 @@ import Navbar from '../Shared/Navbar';
 import './Style.css';
 import StarRatingComponent from 'react-star-rating-component';
 import { Dropdown, Row, Container, Col, Card, Button, ButtonGroup } from 'react-bootstrap';
-import { getBooksById } from '../../API/Book'
+import { getBooksById } from '../../API/Book';
+import { addBook } from '../../API/User';
+import PopupMsg from '../Shared/PopupMsg';
+
 class BookDetails extends React.Component {
     state = {
-        Book: {}
+        Book: {},
+        error: '',
+        showModal: false
+
     }
     componentDidMount() {
-        console.log(this.props)
         const id = this.props.match.params.id;
         getBooksById(id)
             .then(res => {
@@ -19,6 +24,25 @@ class BookDetails extends React.Component {
                 console.log(err)
             })
 
+    }
+    
+    showModal = () => {
+        this.setState({ showModal: true });
+    }
+
+    hideModal = () => {
+        this.setState({ showModal: false });
+    }
+    addBook = (bookId) => (e) => {
+        const status = e.target.name;
+        addBook({ bookId, status })
+            .then(res => {
+                // console.log(res)
+                this.showModal();
+            })
+            .catch(err => {
+                this.setState({ error: 'server error' })
+            })
     }
     render() {
 
@@ -32,13 +56,14 @@ class BookDetails extends React.Component {
                             <Card style={{ width: '15rem', height: '20rem' }}>
                                 <Card.Img className="imgMargin" variant="top" src={this.state.Book.cover} />
                                 <Dropdown as={ButtonGroup}>
-                                    <Button variant="success">Want to Read</Button>
+                                    <Button variant="success" name="want to read" onClick={this.addBook(this.state.Book.id)}>Want to Read</Button>
                                     <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
                                     <Dropdown.Menu>
-                                        <Dropdown.Item hred="#/action-1">Read</Dropdown.Item>
-                                        <Dropdown.Item hred="#/action-2">Currently Reading</Dropdown.Item>
+                                        <Dropdown.Item hred="#/action-1" name="read" onClick={this.addBook(this.state.Book.id)}>Read</Dropdown.Item>
+                                        <Dropdown.Item hred="#/action-2" name="currently reading" onClick={this.addBook(this.state.Book.id)}>Currently Reading</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
+                                <PopupMsg show={this.state.showModal} onHide={this.hideModal} />
 
 
                             </Card>
@@ -47,7 +72,7 @@ class BookDetails extends React.Component {
                             <Card style={{ width: '100%', border: 'none' }}>
                                 <Card.Body>
                                     <Card.Title>{this.state.Book.title}</Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted" style={{ cursor: 'pointer', textDecoration: 'underline' }}>By {this.state.Book.author}</Card.Subtitle>
+                                    <Card.Subtitle className="mb-2 text-muted" >By {this.state.Book.author}</Card.Subtitle>
                                     {/* rating */}
 
                                     <StarRatingComponent

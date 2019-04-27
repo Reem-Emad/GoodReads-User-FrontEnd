@@ -45,7 +45,7 @@ class AuthorDetails extends React.Component {
                     <Row>
                         <Col sm="1"></Col>
                         <Col sm="3">
-                            <Card style={{ width: '15rem', height: '20rem' }}>
+                            <Card style={{ width: '15rem', height: '18rem' }}>
                                 <Card.Img className="imgMargin" variant="top" src={this.state.author.Image} />
 
                             </Card>
@@ -71,13 +71,11 @@ class AuthorDetails extends React.Component {
                         </Col>
 
                     </Row>
+                    <div className="booksList-header">Books by {this.state.author.FullName}:</div>
+                    <div style={{ display: "flex", flexWrap: "wrap", border: "4px solid #A78A68", borderRadius: "10px", marginTop: "2px", marginLeft: "95px" }}>
 
-                    {/*  {!this.state.isHidden && <ListBooksByAuthor books={this.state.author.bookData} />} */}
-                    {/* <button onclick={this.Hide.bind(this)}>Books</button>
-                    <span style={shown}><ListBooksByAuthor books={this.state.author.bookData} /></span>
-                    <h2 style={hidden}></h2> */}
-                    <ListBooksByAuthor books={this.state.author.bookData} />
-
+                        <ListBooksByAuthor books={this.state.author.bookData} />
+                    </div>
                 </Container>
 
             </>
