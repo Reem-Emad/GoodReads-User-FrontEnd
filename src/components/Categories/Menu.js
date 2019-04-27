@@ -4,7 +4,7 @@ import Navbar from '../Shared/Navbar';
 import { Dropdown, Row, Container, Col } from 'react-bootstrap';
 import './Style.css';
 import ListByCategory from '../Books/ListByCategory';
-import { getCategories, getCategoriesById } from '../../API/Category';
+import { getCategories } from '../../API/Category';
 class Categories extends React.Component {
     state = {
         booksForselectedCategory: [],
@@ -23,7 +23,7 @@ class Categories extends React.Component {
             })
     }
     render() {
-        console.log(this.state.allCategory)
+        
         if (this.state.allCategory.length > 0) {
             let eventKey = 1;
             return (

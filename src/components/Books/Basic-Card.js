@@ -1,15 +1,21 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Col, Card } from 'react-bootstrap';
-import { getAuthors } from '../../API/Author';
+import { getBooksById } from '../../API/Book';
 import Navbar from '../Shared/Navbar';
 class BasicCard extends React.Component {
-    getAuthor = () => (e) => {
-        console.log(this.props)
+    getAuthor = (e) => {
+
         if (this.props.authorData != undefined && this.props.authorData.length > 0 && this.props.authorData[0]._id != undefined)
             this.props.history.push(`/AuthorDetailes/${this.props.authorData[0]._id}`);
         else {
-            return <h2>Not Fount these author</h2>
+            getBooksById(this.props.id)
+                .then(res => { this.props.history.push(`/AuthorDetailes/${res.authorData[0].id}`); })
+                .catch(err => { })
+            return (
+                <>
+                </>
+            )
         }
     }
     render() {
