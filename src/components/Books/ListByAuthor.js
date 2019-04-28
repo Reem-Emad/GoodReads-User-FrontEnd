@@ -38,7 +38,7 @@ class AuthorBooks extends React.Component {
             return (
                 <>
                     
-                    <h5>There is No Books For these Category</h5>
+                   
                 </>
             )
         }
