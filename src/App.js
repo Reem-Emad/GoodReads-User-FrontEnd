@@ -16,16 +16,27 @@ import BooksList from './components/Books/List';
 import AuthorDetails from './components/Authors/Details';
 import BookDetailes from './components/Books/BookDetails';
 import AllAuthors from './components/Authors/List';
-import Authors from './Authors';
-import Books from './Books';
 import Users from './Users';
 import getBooksByAuthors from './components/Books/ListByAuthor';
+import { Authentication } from './Authentication';
 
 library.add(faEdit);
 library.add(faTrashAlt);
 library.add(faPlus);
 
 export const MyContext = React.createContext({ users: Users });
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => (
+        Authentication.isAuthenticated === true
+            ? <Component {...props} />
+            : <Redirect to={{
+                pathname: '/',
+                state: { from: props.location }
+            }} />
+    )} />
+)
+
 class App extends React.PureComponent {
     state = {
         loggedInUser: {}
@@ -41,16 +52,16 @@ class App extends React.PureComponent {
         }
 
 
-        if (Object.keys(this.state.loggedInUser).length == 0)
-            return (
-                <MyContext.Provider value={value}>
-                    <Router>
+        // if (Object.keys(this.state.loggedInUser).length == 0)
+        //     return (
+        //         <MyContext.Provider value={value}>
+        //             <Router>
 
-                        <Route exact to="/" component={HomePage}></Route>
+        //                 <Route exact to="/" component={HomePage}></Route>
 
-                    </Router>
-                </MyContext.Provider>
-            )
+        //             </Router>
+        //         </MyContext.Provider>
+        //     )
 
 
         return (
@@ -60,13 +71,13 @@ class App extends React.PureComponent {
                     <Router>
                         <Switch>
                             <Route exact path="/" component={HomePage} />
-                            <Route exact path="/user/home" component={UserHome} />
-                            <Route exact path="/user/categories" component={Categories} />
-                            <Route exact path="/user/books" component={BooksList} />
-                            <Route exact path="/user/authors" component={AllAuthors} />
-                            <Route exact path="/booksByAuthors/:name" component={getBooksByAuthors} />
-                            <Route exact path="/bookDetailes/:id" component={BookDetailes} />
-                            <Route exact path="/AuthorDetailes/:id" component={AuthorDetails} />
+                            <PrivateRoute exact path="/user/home" component={UserHome} />
+                            <PrivateRoute exact path="/user/categories" component={Categories} />
+                            <PrivateRoute exact path="/user/books" component={BooksList} />
+                            <PrivateRoute exact path="/user/authors" component={AllAuthors} />
+                            <PrivateRoute exact path="/booksByAuthors/:name" component={getBooksByAuthors} />
+                            <PrivateRoute exact path="/bookDetailes/:id" component={BookDetailes} />
+                            <PrivateRoute exact path="/AuthorDetailes/:id" component={AuthorDetails} />
 
                         </Switch>
 

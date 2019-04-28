@@ -53,3 +53,28 @@
     
 
 }
+.active
+{
+    background-color: white;
+    color:#58371F;
+}
+.disabled
+{
+    background-color: #58371F;
+    color:white;
+}
+.pagination
+{
+    margin-left: 170px;
+}
+.paginationItem
+{
+    border:1px solid rgba(128, 128, 128, 0.384);
+  
+   cursor: pointer;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #58371F;
+    color:white;
+}

@@ -1,18 +1,20 @@
 import React from 'react';
 import { Card, Dropdown } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
-import Books from '../../Books';
-import Authors from '../../Authors';
 import { editBookRate, editBookStatus } from '../../API/User';
 import { getBooksById } from '../../API/Book';
+import PopupMsg from '../Shared/PopupMsg';
 import StarRatingComponent from 'react-star-rating-component';
+
 import './Style.css';
 
 class UserBookCard extends React.PureComponent {
     state = {
         error: "",
         rate: 0,
-        status: ""
+        status: "",
+        showModal: false
+
     }
     componentDidMount = () => {
         this.setState({ rate: this.props.rate, status: this.props.status });
@@ -24,7 +26,13 @@ class UserBookCard extends React.PureComponent {
         }
         return Ratingstars;
     }
+    showModal = () => {
+        this.setState({ showModal: true });
+    }
 
+    hideModal = () => {
+        this.setState({ showModal: false });
+    }
     onStarClick(nextValue, prevValue, name) {
 
         // console.log(nextValue, this.props.bookId._Id);
@@ -48,9 +56,24 @@ class UserBookCard extends React.PureComponent {
         this.props.history.push(`/bookDetailes/${this.props.bookId.id}`);
 
     }
+    showModal = () => {
+        this.setState({ showModal: true });
+    }
+
+    hideModal = () => {
+        this.setState({ showModal: false });
+    }
     getAuthor = (name) => (e) => {
         getBooksById(this.props.bookId.id)
-            .then(res => { this.props.history.push(`/authorDetailes/${res.authorData[0].id}`) })
+            .then(res => {
+                try {
+                    this.props.history.push(`/authorDetailes/${res.authorData[0].id}`)
+                }
+                catch
+                {
+                    this.showModal()
+                }
+            })
             .catch(err => this.setState({ error: "server error" }))
         //  this.props.history.push(`/authorDetailes/${author.id}`);
 
@@ -70,6 +93,9 @@ class UserBookCard extends React.PureComponent {
 
         return (
             <>
+            {/* author not found */}
+                    <PopupMsg show={this.state.showModal} onHide={this.hideModal} msg="Author details are not available" />
+
                 <Card className="BookCard">
                     <Card.Img variant="top" src={cover} className="BookCard_img" />
                     <Card.Body>

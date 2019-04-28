@@ -1,10 +1,10 @@
 import React from 'react';
 import { MyContext } from '../../App';
 import { withRouter } from 'react-router-dom';
-import { Navbar, Nav, Form, FormControl, Button, Image, Dropdown } from 'react-bootstrap';
-import SearchResults from '../Shared/Search_Results';
+import { Navbar, Nav, Form, FormControl, Button, Image } from 'react-bootstrap';
 import { searchForBooks } from '../../API/Book';
 import Default from '../../images/noPicture.jpg';
+import SearchResults from '../Shared/Search_Results';
 import './Style.css';
 
 class NavBar extends React.PureComponent {
@@ -22,6 +22,7 @@ class NavBar extends React.PureComponent {
         this.setState({ showResults: "none" });
     }
     handleLogOut = (e) => {
+        // localStorage.removeItem('userToken');
         this.props.history.push('/');
 
     }
@@ -45,6 +46,7 @@ class NavBar extends React.PureComponent {
         })
         this.showResults();
     }
+
     render() {
         return (
             <MyContext.Consumer>
@@ -72,12 +74,19 @@ class NavBar extends React.PureComponent {
 
 
                                     {
-                                        value.state.loggedInUser.image === 'N/A' || value.state.loggedInUser.image === '' ?
+                                        value.state.loggedInUser.image === 'N/A' || value.state.loggedInUser.image === '' || value.state.loggedInUser.image === null ?
+
                                             <Image src={Default} roundedCircle style={{ marginLeft: '200px', width: '65px', height: '60px' }} />
+
                                             :
                                             <Image src={value.state.loggedInUser.image} roundedCircle style={{ marginLeft: '200px', width: '65px', height: '60px' }} />
                                     }
+
+
                                     <div style={{ color: '#382110', marginLeft: '7px', fontWeight: 'bold' }}>{value.state.loggedInUser.name.fname} {value.state.loggedInUser.name.lname}</div>
+
+
+
                                     <Button variant="primary" size="sm" className='navbarSearchBtn' style={{ marginLeft: '100px' }} onClick={this.handleLogOut} >
                                         log out
                         </Button>

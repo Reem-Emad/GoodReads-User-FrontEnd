@@ -1,10 +1,10 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
+import PopupMsg from '../Shared/PopupMsg';
 import { MyContext } from '../../App';
 import { Form } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { register } from '../../API/User';
-import PopupMsg from '../Shared/PopupMsg';
 import './Style.css';
 
 class SignUp extends React.PureComponent {
@@ -14,7 +14,7 @@ class SignUp extends React.PureComponent {
         email: '',
         password: '',
         repeatedPassword: '',
-        image: '',
+        image: null,
         error: [{ name: '', msg: '' }],
         showModal: false
     }
@@ -32,22 +32,26 @@ class SignUp extends React.PureComponent {
             FName: { type: String, min: 1, regEx: /^[a-z-A-Z_]{1,15}$/ },
             LName: { type: String, min: 1, regEx: /^[a-z-A-Z_]{1,15}$/ },
             email: SimpleSchema.RegEx.EmailWithTLD,
-            password: { type: String, min: 2 },
-            repeatedPassword: { type: String, min: 2 },
-            image: { type: String, defaultValue: 'N/A' }
+            password: { type: String, min: 1 },
+            repeatedPassword: { type: String, min: 1 },
+            // image: { type: String, defaultValue: 'N/A' }
         }).newContext();
 
-        validationContext.validate({ FName, LName, email, password, repeatedPassword, image });
+        validationContext.validate({ FName, LName, email, password, repeatedPassword });
         const errors = [];
+        // this.setState({ error: errors })
         validationContext.validationErrors().map(e => {
+
             if (e.type === 'regEx' && e.name !== 'email')
                 errors.push({ name: e.name, msg: 'must be charachters only' })
             else if (e.type === 'regEx' && e.name === 'email' && e.value !== '')
                 errors.push({ name: e.name, msg: 'email not valid' })
             else if (e.name === 'email' && e.value === '')
                 errors.push({ name: e.name, msg: 'required' })
-            else
+            else {
+
                 errors.push({ name: e.name, msg: 'required' })
+            }
         });
 
         if (repeatedPassword !== password)
@@ -58,12 +62,13 @@ class SignUp extends React.PureComponent {
             :
             register({ name: { fname: FName, lname: LName }, email, password, image })
                 .then(res => {
-                    // alert('Done');
+
                     this.showModal();
-                    this.setState({ FName: '', LName: '', email: '', password: '', repeatedPassword: '', image: '', error: [{ name: '', msg: '' }] })
+                    this.setState({ FName: '', LName: '', email: '', password: '', repeatedPassword: '', image: null, error: [{ name: '', msg: '' }] })
                 })
                 .catch(err => {
-                    if (err.response.data.message.includes("duplicate key"))
+
+                    if (err.response.data.message.includes("duplicate key") || err.response.data.message.includes("status code 400"))
                         errors.push({ name: 'email', msg: 'this email used before' })
                     this.setState({ error: errors });
                 });
@@ -71,8 +76,14 @@ class SignUp extends React.PureComponent {
     handleChange = (e) => {
         e.preventDefault();
         const key = e.target.name;
-        const value = e.target.value;
-        this.setState({ [key]: value });
+        if (key !== 'image') {
+            const value = e.target.value;
+            this.setState({ [key]: value });
+        }
+        else {
+
+            this.setState({ image: e.target.files[0] }, () => { console.log(this.state.image) })
+        }
     }
     render() {
         return (
@@ -81,7 +92,7 @@ class SignUp extends React.PureComponent {
                 {value =>
                     (
                         <>
-                            <PopupMsg show={this.state.showModal} onHide={this.hideModal} />
+                            <PopupMsg show={this.state.showModal} onHide={this.hideModal} msg="Done" />
                             <div style={{ height: '560px' }}>
 
                                 <Form className='SignUp_form' onSubmit={this.handleSubmit()}>
@@ -142,19 +153,12 @@ class SignUp extends React.PureComponent {
                                         </Form.Text>
                                     </Form.Group>
                                     <Form.Group style={{ display: 'flex' }}>
-                                        <Form.Control type="file" name='image' placeholder="upload Image" className="ImageUpload " value={this.state.image} onChange={this.handleChange} />
-                                        <Form.Text style={{ color: 'darkred', fontWeight: 'bold' }}>{
-                                            this.state.error.map(e => {
-                                                if (e.name === 'image')
-                                                    return e.msg
-                                            })
-                                        }
-                                        </Form.Text>
+                                        <Form.Control type="file" name='image' placeholder="upload Image" className="ImageUpload" onChange={this.handleChange} />
 
                                     </Form.Group>
                                     <Button variant="primary" type="submit" className='SignUp_form-btn'>
                                         Sign up
-                    </Button>
+                          </Button>
                                 </Form>
                             </div>
                         </>

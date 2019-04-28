@@ -1,11 +1,11 @@
 import React from 'react';
 import Navbar from '../Shared/Navbar';
-import './Style.css';
 import StarRatingComponent from 'react-star-rating-component';
+import PopupMsg from '../Shared/PopupMsg';
 import { Dropdown, Row, Container, Col, Card, Button, ButtonGroup } from 'react-bootstrap';
 import { getBooksById } from '../../API/Book';
 import { addBook } from '../../API/User';
-import PopupMsg from '../Shared/PopupMsg';
+import './Style.css';
 
 class BookDetails extends React.Component {
     state = {
@@ -74,7 +74,7 @@ class BookDetails extends React.Component {
                                         <Dropdown.Item hred="#/action-2" name="currently reading" onClick={this.addBook(this.state.Book.id)}>Currently Reading</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
-                                <PopupMsg show={this.state.showModal} onHide={this.hideModal} />
+                                <PopupMsg show={this.state.showModal} onHide={this.hideModal} msg="Done" />
 
 
                             </Card>

@@ -1,11 +1,12 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { Navbar } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { Image } from 'react-bootstrap';
 import { MyContext } from '../../App';
 import { login, getProfile } from '../../API/User';
+import { Authentication } from '../../Authentication';
 import Logo from '../../images/logo.png';
 import './Style.css';
 
@@ -14,8 +15,11 @@ class SignIn extends React.PureComponent {
     state = {
         email: '',
         password: '',
-        enteredDataValidation: ''
+        enteredDataValidation: '',
+
+        redirectToReferrer: false
     }
+
     handleSubmit = (addLoggedInUser) => (event) => {
         event.preventDefault();
         const { email, password } = this.state;
@@ -28,16 +32,24 @@ class SignIn extends React.PureComponent {
             this.setState({ enteredDataValidation: 'Enter email please' })
 
         else {
+
             login({ email, password })
                 .then(res => {
 
                     localStorage.setItem('userToken', res.token);
                     getProfile()
-                        .then(res => { addLoggedInUser(res) })
+                        .then(res => {
+                            addLoggedInUser(res);
+                            Authentication.authenticate(() => {
+                                this.setState({ redirectToReferrer: true })
+                            })
+                        })
                         .catch(err => {
                             this.setState({ enteredDataValidation: 'please try again later' })
                         })
-                    this.props.history.push('/user/home');
+
+
+                    // this.props.history.push('/user/home');
                 })
                 .catch(err => {
 
@@ -55,6 +67,11 @@ class SignIn extends React.PureComponent {
 
 
     render() {
+        const { from } = this.props.location.state || { from: { pathname: '/user/home' } }
+        if (this.state.redirectToReferrer === true) {
+
+            return <Redirect to={from} />
+        }
         return (
             <MyContext.Consumer>
 

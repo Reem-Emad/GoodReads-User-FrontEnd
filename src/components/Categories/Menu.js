@@ -1,10 +1,10 @@
 import React from 'react';
 import categories from '../../Categories';
 import Navbar from '../Shared/Navbar';
-import { Dropdown, Row, Container, Col } from 'react-bootstrap';
-import './Style.css';
 import ListByCategory from '../Books/ListByCategory';
+import { Dropdown, Row, Container, Col } from 'react-bootstrap';
 import { getCategories } from '../../API/Category';
+import './Style.css';
 class Categories extends React.Component {
     state = {
         booksForselectedCategory: [],

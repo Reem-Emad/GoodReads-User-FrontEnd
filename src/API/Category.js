@@ -10,7 +10,9 @@ export const getCategories = () => {
 }
 
 export const getCategoriesById = (id) => {
-    return axois.get(`${BACKEND_URL}/api/categories/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem('userToken')}` } })
+    return axois.get(`${BACKEND_URL}/api/categories/${id}`,
+    
+     { headers: { Authorization: `Bearer ${localStorage.getItem('userToken')}` } })
         .then(res => {
             return res.data;
         })

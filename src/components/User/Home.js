@@ -1,48 +1,43 @@
 import React from 'react';
-import './Style.css';
 import { Card, ListGroup } from 'react-bootstrap';
-import { MyContext } from '../../App';
+import { getUserBooks } from '../../API/User';
 import NavBar from '../Shared/Navbar';
 import PaginationComponent from '../Shared/Pagination';
 import BookCard from './BookCard';
-import { getAllBooks, getReadBooks, getWantBooks, getReadingBooks } from '../../API/User';
+import './Style.css';
 
 class UserHome extends React.PureComponent {
     state = {
         clickedFilter: 'All',
         userShowedBooks: [],
-        error: ''
+        pageOfItems: [],
+        error: '',
+
     }
     componentDidMount = () => {
-        getAllBooks()
-            .then(res => { this.setState({ userShowedBooks: res }) })
+        const status = "all";
+        getUserBooks({ status })
+            .then(res => {
+
+                this.setState({ userShowedBooks: res })
+            })
             .catch(err => { this.setState({ error: "server error" }) });
     }
     handleClick = (e) => {
-        const name = e.target.name;
-        if (name === "Read") {
-            getReadBooks()
-                .then(res => { this.setState({ userShowedBooks: res, clickedFilter: name }) })
-                .catch(err => { this.setState({ error: "server error" }) });
-        }
-        else if (name === "All") {
-            getAllBooks()
-                .then(res => { this.setState({ userShowedBooks: res, clickedFilter: name }) })
-                .catch(err => { this.setState({ error: "server error" }) });
-        }
-        else if (name === "Want To Read") {
-            getWantBooks()
-                .then(res => { this.setState({ userShowedBooks: res, clickedFilter: name }) })
-                .catch(err => { this.setState({ error: "server error" }) });
-        }
-        else {
-            getReadingBooks()
-                .then(res => { this.setState({ userShowedBooks: res, clickedFilter: name }) })
-                .catch(err => { this.setState({ error: "server error" }) });
-        }
+        const status = e.target.name;
+        getUserBooks({ status })
+            .then(res => {
+                this.setState({ userShowedBooks: res })
+            })
+            .catch(err => { this.setState({ error: "server error" }) });
 
     }
+    onChangePage = (pageOfItems) => {
+        // update state with new page of items
+        this.setState({ pageOfItems: pageOfItems });
+    }
     render() {
+
         return (
             <>
 
@@ -70,11 +65,12 @@ class UserHome extends React.PureComponent {
                         <div style={{}}>
                             {
 
-                                this.state.userShowedBooks.map(book => <BookCard key={book.bookId._id} {...book} clickedFilter={this.state.clickedFilter} />)
+                                this.state.pageOfItems.map(book => <BookCard key={book.bookId._id} {...book} clickedFilter={this.state.clickedFilter} />)
 
                             }
+                            <PaginationComponent items={this.state.userShowedBooks} onChangePage={this.onChangePage}></PaginationComponent>
                         </div>
-                        <PaginationComponent></PaginationComponent>
+
                     </div>
                 </div>
 
@@ -82,5 +78,8 @@ class UserHome extends React.PureComponent {
 
         )
     }
+
+
+
 }
 export default UserHome;
