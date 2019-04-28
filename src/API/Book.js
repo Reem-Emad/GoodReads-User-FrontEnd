@@ -5,7 +5,6 @@ const BACKEND_URL = 'http://localhost:3000';
 export const getBooks = () => {
     return axios.get(`${BACKEND_URL}/api/books`, { headers: { Authorization: `Bearer ${localStorage.getItem('userToken')}` } })
         .then(res => {
-            // console.log(res.data);
             return res.data;
 
         })

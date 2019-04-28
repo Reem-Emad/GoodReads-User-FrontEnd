@@ -21,7 +21,7 @@ class AuthorBooks extends React.Component {
         if (this.props.books != undefined) {
             return (
                 <>
-                    
+
                     {
 
                         this.props.books.map(b => <div style={{ display: 'inline', margin: '10px' }} key={b._id} >
@@ -37,8 +37,8 @@ class AuthorBooks extends React.Component {
         else {
             return (
                 <>
-                    
-                   
+
+
                 </>
             )
         }
