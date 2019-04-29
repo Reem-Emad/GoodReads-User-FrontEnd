@@ -25,12 +25,12 @@ class UserHome extends React.PureComponent {
     }
     handleClick = (e) => {
         const status = e.target.name;
-        this.setState({ clickedFilter: status })
         getUserBooks({ status })
-            .then(res => {
-                this.setState({ userShowedBooks: res })
-            })
-            .catch(err => { this.setState({ error: "server error" }) });
+        .then(res => {
+            this.setState({ userShowedBooks: res })
+        })
+        .catch(err => { this.setState({ error: "server error" }) });
+        this.setState({ clickedFilter: status })
 
     }
     onChangePage = (pageOfItems) => {

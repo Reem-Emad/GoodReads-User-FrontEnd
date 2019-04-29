@@ -21,12 +21,13 @@ class Pagination extends React.Component {
     }
 
     setPage(page) {
+        // debugger;
         var items = this.props.items;
         var pager = this.state.pager;
 
-        if (page < 1 || page > pager.totalPages) {
-            return;
-        }
+        // if (page < 1 || page > pager.totalPages) {
+        //     return;
+        // }
 
         // get new pager object for specified page
         pager = this.getPager(items.length, page);
@@ -42,6 +43,7 @@ class Pagination extends React.Component {
     }
 
     getPager(totalItems, currentPage, pageSize) {
+        // debugger;
         // default to first page
         currentPage = currentPage || 1;
 
