@@ -23,7 +23,7 @@ class Categories extends React.Component {
             })
     }
     render() {
-        
+
         if (this.state.allCategory.length > 0) {
             let eventKey = 1;
             return (
@@ -62,6 +62,8 @@ class Categories extends React.Component {
         else {
             return (
                 <>
+                    <Navbar></Navbar>
+
                 </>
             )
         }

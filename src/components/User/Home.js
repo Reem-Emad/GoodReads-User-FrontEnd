@@ -25,6 +25,7 @@ class UserHome extends React.PureComponent {
     }
     handleClick = (e) => {
         const status = e.target.name;
+        this.setState({ clickedFilter: status })
         getUserBooks({ status })
             .then(res => {
                 this.setState({ userShowedBooks: res })

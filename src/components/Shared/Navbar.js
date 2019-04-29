@@ -60,8 +60,8 @@ class NavBar extends React.PureComponent {
                                 <Navbar.Collapse id="basic-navbar-nav">
                                     <Nav className="mr-auto" className='navbarLinks'>
                                         <Nav.Link name='home' onClick={this.handleClick} >Home</Nav.Link>
-                                        <Nav.Link name='categories' onClick={this.handleClick}>Categories</Nav.Link>
                                         <Nav.Link name='books' onClick={this.handleClick}>Books</Nav.Link>
+                                        <Nav.Link name='categories' onClick={this.handleClick}>Categories</Nav.Link>
                                         <Nav.Link name='authors' onClick={this.handleClick}>Authors</Nav.Link>
                                     </Nav>
 
