@@ -66,7 +66,7 @@ class BookDetails extends React.Component {
                         <Col md="3">
                             <Card style={{ width: '15rem', height: '20rem' }}>
                                 <Card.Img className="imgMargin" variant="top" src={this.state.Book.cover} />
-                                <Dropdown as={ButtonGroup} style={{height:"38px", width:"100%", bottom:"-49px"}}>
+                                <Dropdown as={ButtonGroup}>
                                     <Button variant="success" name="want to read" onClick={this.addBook(this.state.Book.id)}>Want to Read</Button>
                                     <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
                                     <Dropdown.Menu>
